@@ -4,13 +4,17 @@
     <title>Raycasting 1</title>
     <style type="text/css">
     canvas {
+        display: block;
+    }
+    .canvas_outer {
         border: 1px black solid;
+        display: inline-block;
     }
     </style>
 </head>
 <body>
-    <canvas id="game" width="640" height="480"></canvas>
-    <canvas id="map_editor" width="640" height="480"></canvas>
+    <div class="canvas_outer"><canvas id="game" width="640" height="480"></canvas></div>
+    <div class="canvas_outer"><canvas id="map_editor" width="640" height="480"></canvas></div>
     <script src="game.js"></script>
 </body>
 </html>
