@@ -7,6 +7,22 @@ var edcx;
 
 var player = {'x': 50, 'y': 50, 'ang': 0}
 
+var map;
+var mapsize = 20;
+
+var mouse = {'x': 0, 'y': 0};
+
+function whatTile() {
+    if((mouse.x <= 20) || (mouse.x >= 420) || (mouse.y <= 20) || (mouse.y >= 420)) {
+        return {'x':-1,'y':-1};
+    } else {
+        return {
+            'x': Math.floor((mouse.x - 20) / mapsize),
+            'y': Math.floor((mouse.y - 20) / mapsize)
+        };
+    }
+}
+
 function editorRightClick(event) {
     event.preventDefault();
 }
@@ -19,8 +35,10 @@ function editorMouseChanged(event) {
 }
 
 function editorMouseMove(event) {
+    mouse.x = event.pageX - el_canvas_editor.offsetLeft;
+    mouse.y = event.pageY - el_canvas_editor.offsetTop;
+    
     if(right_click_down) {
-        //console.log(event.pageX - el_canvas_editor.offsetLeft,event.pageY - el_canvas_editor.offsetTop);
         player.x = event.pageX - el_canvas_editor.offsetLeft;
         player.y = event.pageY - el_canvas_editor.offsetTop;
     }
@@ -28,13 +46,30 @@ function editorMouseMove(event) {
 }
 
 function editorRefresh() {
-    edcx.fillStyle = 'ffffff';
     edcx.clearRect(0,0,640,480);
     
-    edcx.strokeStyle = '0000bb';
+    edcx.strokeStyle = '#888888';
+    edcx.lineWidth = '1';
+    for(var i = 0; i < mapsize; i++) {
+        for(var j = 0; j < mapsize; j++) {
+            edcx.beginPath();
+            edcx.moveTo(20.5 + (i*20),20.5 + (j*20));
+            edcx.lineTo(20.5 + ((i+1)*20),20.5 + (j*20));
+            edcx.lineTo(20.5 + ((i+1)*20),20.5 + ((j+1)*20));
+            edcx.lineTo(20.5 + (i*20),20.5 + ((j+1)*20));
+            edcx.lineTo(20.5 + (i*20),20.5 + (j*20));
+            edcx.closePath();
+            edcx.stroke();
+        }
+    }
+
+    edcx.strokeStyle = '#0000bb';
     edcx.beginPath();
     edcx.arc(player.x,player.y,5,0,2*Math.PI);
     edcx.stroke();
+    
+    var wt = whatTile();
+    edcx.fillText(wt.x+','+wt.y,500,50);
 }
 
 function setup() {
@@ -46,6 +81,11 @@ function setup() {
     el_canvas_editor.addEventListener('mouseup', editorMouseChanged, false);
     
     editorRefresh();
+    
+    map = new Array(mapsize);
+    for(var i = 0; i < mapsize; i++) {
+        map[i] = new Array(mapsize).fill(0);
+    }
 }
 
 window.onload = function() {
