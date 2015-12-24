@@ -5,7 +5,7 @@ var right_click_down = false;
 
 var edcx;
 
-var player = {'x': 10.5, 'y': 10.5, 'ang': 0}
+var player = {'x': 10.5, 'y': 10.5, 'ang': 120};
 
 var map = null;
 var mapsize = 20;
@@ -84,6 +84,12 @@ function editorRefresh() {
     var player_dy = 20.5 + (20 * player.y);
     
     edcx.arc(player_dx,player_dy,5,0,2*Math.PI);
+    edcx.stroke();
+    
+    edcx.beginPath();
+    edcx.moveTo(player_dx,player_dy);
+    edcx.lineTo((Math.cos(player.ang * Math.PI / 180.0) * 20) + player_dx,(-Math.sin(player.ang * Math.PI / 180.0) * 20) + player_dy);
+    edcx.closePath();
     edcx.stroke();
     
     // draw the text that tells what tile you're hovering over
