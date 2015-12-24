@@ -4,8 +4,9 @@ var left_click_down = false;
 var right_click_down = false;
 
 var edcx;
+var gmcx;
 
-var player = {'x': 10.5, 'y': 10.5, 'ang': 120};
+var player = {'x': 6.5, 'y': 5.5, 'ang': 120};
 
 var map = null;
 var mapsize = 20;
@@ -98,12 +99,17 @@ function editorRefresh() {
     edcx.fillText(wt.x+','+wt.y,500,50);
 }
 
+function gameRefresh() {
+}
+
 function setup() {
     map = new Array(mapsize);
     for(var i = 0; i < mapsize; i++) {
         map[i] = new Array(mapsize).fill(0);
     }
-    map[3][3] = 1;
+    map[3][2] = 1;
+    map[4][2] = 1;
+    map[5][1] = 1;
     
     el_canvas_editor = document.getElementById('map_editor');
     edcx = el_canvas_editor.getContext('2d');
@@ -112,7 +118,11 @@ function setup() {
     el_canvas_editor.addEventListener('mousemove', editorMouseMove, false);
     el_canvas_editor.addEventListener('mouseup', editorMouseChanged, false);
     
+    el_canvas_game = document.getElementById('game');
+    gmcx = el_canvas_game.getContext('2d');
+    
     editorRefresh();
+    gameRefresh();
 }
 
 window.onload = function() {
