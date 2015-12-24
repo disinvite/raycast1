@@ -5,7 +5,7 @@ var right_click_down = false;
 
 var edcx;
 
-var player = {'x': 50, 'y': 50, 'ang': 0}
+var player = {'x': 10.5, 'y': 10.5, 'ang': 0}
 
 var map = null;
 var mapsize = 20;
@@ -44,8 +44,11 @@ function editorMouseMove(event) {
     mouse.y = event.pageY - el_canvas_editor.offsetTop;
     
     if(right_click_down) {
-        player.x = event.pageX - el_canvas_editor.offsetLeft;
-        player.y = event.pageY - el_canvas_editor.offsetTop;
+        var wt = whatTile();
+        if(wt.x != -1 && wt.y != -1) {
+            player.x = wt.x + 0.5;
+            player.y = wt.y + 0.5;
+        }
     }
     editorRefresh();
 }
@@ -53,6 +56,7 @@ function editorMouseMove(event) {
 function editorRefresh() {
     edcx.clearRect(0,0,640,480);
     
+    // draw the tiles
     edcx.strokeStyle = '#888888';
     edcx.fillStyle = '#bb0000';
     edcx.lineWidth = '1';
@@ -73,11 +77,16 @@ function editorRefresh() {
         }
     }
 
+    // draw the player
     edcx.strokeStyle = '#0000bb';
     edcx.beginPath();
-    edcx.arc(player.x,player.y,5,0,2*Math.PI);
+    var player_dx = 20.5 + (20 * player.x);
+    var player_dy = 20.5 + (20 * player.y);
+    
+    edcx.arc(player_dx,player_dy,5,0,2*Math.PI);
     edcx.stroke();
     
+    // draw the text that tells what tile you're hovering over
     edcx.fillStyle = '#000000';
     var wt = whatTile();
     edcx.fillText(wt.x+','+wt.y,500,50);
