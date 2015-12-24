@@ -7,7 +7,7 @@ var edcx;
 
 var player = {'x': 50, 'y': 50, 'ang': 0}
 
-var map;
+var map = null;
 var mapsize = 20;
 
 var mouse = {'x': 0, 'y': 0};
@@ -28,6 +28,11 @@ function editorRightClick(event) {
 }
 
 function editorMouseChanged(event) {
+    if((event.buttons & 1) && !left_click_down) {
+        var wt = whatTile();
+        map[wt.x][wt.y] = !map[wt.x][wt.y]
+    }
+
     left_click_down = (event.buttons & 1);
     right_click_down = (event.buttons & 2);
     
@@ -49,6 +54,7 @@ function editorRefresh() {
     edcx.clearRect(0,0,640,480);
     
     edcx.strokeStyle = '#888888';
+    edcx.fillStyle = '#bb0000';
     edcx.lineWidth = '1';
     for(var i = 0; i < mapsize; i++) {
         for(var j = 0; j < mapsize; j++) {
@@ -59,7 +65,11 @@ function editorRefresh() {
             edcx.lineTo(20.5 + (i*20),20.5 + ((j+1)*20));
             edcx.lineTo(20.5 + (i*20),20.5 + (j*20));
             edcx.closePath();
-            edcx.stroke();
+            if(map[i][j]) {
+                edcx.fill();
+            } else {
+                edcx.stroke();
+            }
         }
     }
 
@@ -68,11 +78,18 @@ function editorRefresh() {
     edcx.arc(player.x,player.y,5,0,2*Math.PI);
     edcx.stroke();
     
+    edcx.fillStyle = '#000000';
     var wt = whatTile();
     edcx.fillText(wt.x+','+wt.y,500,50);
 }
 
 function setup() {
+    map = new Array(mapsize);
+    for(var i = 0; i < mapsize; i++) {
+        map[i] = new Array(mapsize).fill(0);
+    }
+    map[3][3] = 1;
+    
     el_canvas_editor = document.getElementById('map_editor');
     edcx = el_canvas_editor.getContext('2d');
     el_canvas_editor.addEventListener('contextmenu', editorRightClick, false);
@@ -81,11 +98,6 @@ function setup() {
     el_canvas_editor.addEventListener('mouseup', editorMouseChanged, false);
     
     editorRefresh();
-    
-    map = new Array(mapsize);
-    for(var i = 0; i < mapsize; i++) {
-        map[i] = new Array(mapsize).fill(0);
-    }
 }
 
 window.onload = function() {
