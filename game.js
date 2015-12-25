@@ -9,7 +9,7 @@ var gmcx;
 var player = {'x': 6.5, 'y': 5.5, 'ang': 120};
 
 var map = null;
-var mapsize = 20;
+var mapsize = 10;
 
 var mouse = {'x': 0, 'y': 0};
 
@@ -18,8 +18,8 @@ function whatTile() {
         return {'x':-1,'y':-1};
     } else {
         return {
-            'x': Math.floor((mouse.x - 20) / mapsize),
-            'y': Math.floor((mouse.y - 20) / mapsize)
+            'x': Math.floor((mouse.x - 20) / 40),
+            'y': Math.floor((mouse.y - 20) / 40)
         };
     }
 }
@@ -64,11 +64,11 @@ function editorRefresh() {
     for(var i = 0; i < mapsize; i++) {
         for(var j = 0; j < mapsize; j++) {
             edcx.beginPath();
-            edcx.moveTo(20.5 + (i*20),20.5 + (j*20));
-            edcx.lineTo(20.5 + ((i+1)*20),20.5 + (j*20));
-            edcx.lineTo(20.5 + ((i+1)*20),20.5 + ((j+1)*20));
-            edcx.lineTo(20.5 + (i*20),20.5 + ((j+1)*20));
-            edcx.lineTo(20.5 + (i*20),20.5 + (j*20));
+            edcx.moveTo(20.5 + (i*40),20.5 + (j*40));
+            edcx.lineTo(20.5 + ((i+1)*40),20.5 + (j*40));
+            edcx.lineTo(20.5 + ((i+1)*40),20.5 + ((j+1)*40));
+            edcx.lineTo(20.5 + (i*40),20.5 + ((j+1)*40));
+            edcx.lineTo(20.5 + (i*40),20.5 + (j*40));
             edcx.closePath();
             if(map[i][j]) {
                 edcx.fill();
@@ -81,8 +81,8 @@ function editorRefresh() {
     // draw the player
     edcx.strokeStyle = '#0000bb';
     edcx.beginPath();
-    var player_dx = 20.5 + (20 * player.x);
-    var player_dy = 20.5 + (20 * player.y);
+    var player_dx = 20.5 + (40 * player.x);
+    var player_dy = 20.5 + (40 * player.y);
     
     edcx.arc(player_dx,player_dy,5,0,2*Math.PI);
     edcx.stroke();
